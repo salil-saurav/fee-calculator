@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Australian Migration Fee Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+        integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="lib/nice-select2.css">
+    <link rel="stylesheet" href="assets/styles/main.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="calculator_container" style="max-width: 775px; margin: 0 auto; ">
+                        <div class="calc_head mb-3">
+                            <h1 style="margin: 0 auto;">
+                                Government Fee Calculator
+                            </h1>
+                            <div class="page_progress">
+                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50"
+                                    style="height: 5px;" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar" style="width: 50%;"></div>
+                                </div>
+                                <div class="page_status d-flex justify-content-between px-3 mt-2">
+                                    <span class="page_number">page <span class="current_page">1</span> of 2 </span>
+                                    <span class="progress_num">50%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step-1">
+
+                            <div class="calc_body mt-5">
+                                <div class="form_container">
+                                    <div class="mb-3">
+                                        <div class="form_label">
+                                            <label for="visa_type" class="form-label"> <strong> Choose Visa Type
+                                                </strong>
+                                                <sup>&ast;</sup>
+                                            </label>
+                                        </div>
+                                        <select name="visa_type" id="visa_type" class="w-100">
+                                            <option selected value="0"> Choose VISA Type...</option>
+                                            <option value="1">Skills in Demand (Sc 482) (Nomination & Visa)
+                                            </option>
+                                            <option value="2">Skills in Demand (Sc 482) (Nomination Transfer only)
+                                            </option>
+                                            <option value="3">
+                                                Employer Nomination Scheme (Sc 186)
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 d-none" data-name="businessTernover" style="margin-top: 50px;">
+                                        <label for="business_turnover" class="form-label">
+                                            <strong> The yearly business turnover is...<sup> &ast;</sup> </strong>
+                                            <svg width="18" class="tooltipBtn" height="18" viewBox="0 0 18 18"
+                                                fill="#37474f" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Businesses with a turnover of more than $10 million incur an additional SAF levy"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M9 0C4.02948 0 0 4.02952 0 9.00009C0 13.9705 4.02948 18 9 18C13.9705 18 18 13.9705 18 9.00009C18 4.02952 13.9705 0 9 0ZM8.98866 4.0639C9.19026 3.84502 9.43596 3.73378 9.71856 3.73378C9.9477 3.73378 10.1493 3.81622 10.3007 3.97228C10.453 4.12744 10.5302 4.32598 10.5302 4.56179C10.5302 4.85735 10.4269 5.12015 10.2233 5.34281C10.0141 5.5725 9.7695 5.68932 9.49698 5.68932C9.27198 5.68932 9.07272 5.6049 8.9208 5.44523C8.77032 5.28881 8.69346 5.08433 8.69346 4.83845C8.69346 4.53731 8.79282 4.27666 8.98866 4.0639ZM10.4879 12.5432C9.74178 13.2449 9.20916 13.6823 8.86032 13.881C8.48808 14.0941 8.18136 14.1982 7.92306 14.1982C7.66638 14.1982 7.45704 14.1127 7.30044 13.9444C7.1487 13.7817 7.07184 13.5619 7.07184 13.2919C7.07184 12.6017 7.4628 10.999 8.26758 8.39204C8.28126 8.34794 8.29188 8.306 8.29908 8.26694C8.26902 8.2799 8.23428 8.29826 8.19396 8.32328C8.12808 8.36486 7.92738 8.52237 7.34004 9.09621C7.2504 9.18387 7.11018 9.19197 7.011 9.11511L6.6636 8.84637C6.60816 8.80371 6.57324 8.73963 6.56712 8.66979C6.561 8.60013 6.5844 8.53101 6.63138 8.47917C7.17264 7.88318 7.6779 7.45045 8.1333 7.19305C8.60994 6.92449 9.01296 6.79381 9.36486 6.79381C9.59238 6.79381 9.77616 6.85033 9.91152 6.96229C10.0588 7.08505 10.1365 7.25551 10.1365 7.45549C10.1365 7.58672 10.0742 7.92854 9.61452 9.47026C8.95788 11.6731 8.80092 12.4727 8.7903 12.7493C8.9145 12.6759 9.20844 12.4671 9.83592 11.8774C9.93366 11.7849 10.087 11.7867 10.183 11.8803L10.4909 12.1805C10.5401 12.2284 10.5676 12.2941 10.5669 12.3627C10.5662 12.4313 10.5377 12.4963 10.4879 12.5432Z">
+                                                </path>
+                                            </svg>
+                                        </label>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="turnover_check"
+                                                id="turnover@yes" value="yes">
+                                            <label class="form-check-label" for="turnover@yes">
+                                                &gt; $10 million
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="turnover_check"
+                                                id="turnover@no" value="no">
+                                            <label class="form-check-label" for="turnover@no">
+                                                &lt; $10 million
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 d-none" data-name="Visaduration" id="Visaduration">
+                                        <label for="required_duration">
+                                            <strong> What is the required duration for the visa (in years)?
+                                                <sup> &ast;</sup> </strong>
+                                            <svg width="18" class="tooltipBtn" height="18" viewBox="0 0 18 18"
+                                                fill="#37474f" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="The duration can be up to 4 years"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M9 0C4.02948 0 0 4.02952 0 9.00009C0 13.9705 4.02948 18 9 18C13.9705 18 18 13.9705 18 9.00009C18 4.02952 13.9705 0 9 0ZM8.98866 4.0639C9.19026 3.84502 9.43596 3.73378 9.71856 3.73378C9.9477 3.73378 10.1493 3.81622 10.3007 3.97228C10.453 4.12744 10.5302 4.32598 10.5302 4.56179C10.5302 4.85735 10.4269 5.12015 10.2233 5.34281C10.0141 5.5725 9.7695 5.68932 9.49698 5.68932C9.27198 5.68932 9.07272 5.6049 8.9208 5.44523C8.77032 5.28881 8.69346 5.08433 8.69346 4.83845C8.69346 4.53731 8.79282 4.27666 8.98866 4.0639ZM10.4879 12.5432C9.74178 13.2449 9.20916 13.6823 8.86032 13.881C8.48808 14.0941 8.18136 14.1982 7.92306 14.1982C7.66638 14.1982 7.45704 14.1127 7.30044 13.9444C7.1487 13.7817 7.07184 13.5619 7.07184 13.2919C7.07184 12.6017 7.4628 10.999 8.26758 8.39204C8.28126 8.34794 8.29188 8.306 8.29908 8.26694C8.26902 8.2799 8.23428 8.29826 8.19396 8.32328C8.12808 8.36486 7.92738 8.52237 7.34004 9.09621C7.2504 9.18387 7.11018 9.19197 7.011 9.11511L6.6636 8.84637C6.60816 8.80371 6.57324 8.73963 6.56712 8.66979C6.561 8.60013 6.5844 8.53101 6.63138 8.47917C7.17264 7.88318 7.6779 7.45045 8.1333 7.19305C8.60994 6.92449 9.01296 6.79381 9.36486 6.79381C9.59238 6.79381 9.77616 6.85033 9.91152 6.96229C10.0588 7.08505 10.1365 7.25551 10.1365 7.45549C10.1365 7.58672 10.0742 7.92854 9.61452 9.47026C8.95788 11.6731 8.80092 12.4727 8.7903 12.7493C8.9145 12.6759 9.20844 12.4671 9.83592 11.8774C9.93366 11.7849 10.087 11.7867 10.183 11.8803L10.4909 12.1805C10.5401 12.2284 10.5676 12.2941 10.5669 12.3627C10.5662 12.4313 10.5377 12.4963 10.4879 12.5432Z">
+                                                </path>
+                                            </svg>
+
+                                        </label>
+                                        <div class="slider-container">
+                                            <div class="bubble" id="bubble">2 years</div>
+                                            <input type="range" class="slider" min="1" max="4" value="1" step="1"
+                                                name="visa_duration" id="required_duration">
+                                            <div class="labels">
+                                                <span>1</span>
+                                                <span>2</span>
+                                                <span>3</span>
+                                                <span>4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 mt-5 dependentWrap">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="over18" class="mb-2">
+                                                    <strong> How many over 18 dependents?
+                                                        <sup> &ast;</sup></strong>
+                                                </label>
+                                                <input type="number" class="form-control" name="over18" id="over18"
+                                                    placeholder="Enter number">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="under18" class="mb-2">
+                                                    <strong>How many under 18 dependents?
+                                                        <sup> &ast;</sup> </strong>
+                                                </label>
+                                                <input type="number" class="form-control" name="under18" id="under18"
+                                                    placeholder="Enter number">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="result_container">
+                                <div class="result_header">
+                                    <div>Fee Category</div>
+                                    <div>Can be paid by</div>
+                                    <div>Quantity</div>
+                                    <div>Price</div>
+                                </div>
+
+                                <div class="result_body background_primary nominationFee">
+                                    <div>
+                                        Nomination Fee
+                                    </div>
+                                    <div>
+                                        Employer
+                                    </div>
+                                    <div>
+                                        <span class="quantity">
+                                            0
+                                        </span>
+                                    </div>
+                                    <div class="price_container">
+                                        &dollar; <span class="price">0</span>
+                                    </div>
+                                </div>
+                                <div class="result_body safLevy">
+                                    <div>
+                                        SAF Levy
+                                    </div>
+                                    <div>
+                                        Employer
+                                    </div>
+                                    <div>
+                                        <span class="quantity">
+                                            0
+                                        </span>
+                                    </div>
+                                    <div class="price_container">
+                                        &dollar; <span class="price">0</span>
+                                    </div>
+                                </div>
+                                <div class="result_body  background_primary visaApplication">
+                                    <div>
+                                        Visa application (Primary applicant)
+                                    </div>
+                                    <div>
+                                        Employer or Applicant
+                                    </div>
+                                    <div>
+                                        <span class="quantity">
+                                            0
+                                        </span>
+                                    </div>
+                                    <div class="price_container">
+                                        &dollar; <span class="price">0</span>
+                                    </div>
+                                </div>
+                                <div class="result_body secondryApplication over18 d-none">
+                                    <div>
+                                        Secondary applicant
+                                        <div class="year_wrap ">
+                                            <span class="gt-18 ">
+                                                (&gt; 18 y/o)
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        Employer or Applicant
+                                    </div>
+                                    <div>
+                                        <span class="quantity">
+                                            0
+                                        </span>
+                                    </div>
+                                    <div class="price_container">
+                                        &dollar; <span class="price">0</span>
+                                    </div>
+                                </div>
+                                <div class="result_body background_primary secondryApplication under18 d-none">
+                                    <div>
+                                        Secondary applicant
+                                        <div class="year_wrap">
+                                            <span class="lt-18">
+                                                (&lt; 18 y/o)
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        Employer or Applicant
+                                    </div>
+                                    <div>
+                                        <span class="quantity">
+                                            0
+                                        </span>
+                                    </div>
+                                    <div class="price_container">
+                                        &dollar; <span class="price">0</span>
+                                    </div>
+                                </div>
+                                <div class="result_body total">
+                                    <div class="fw-bold">
+                                        Total
+                                    </div>
+                                    <div>
+
+                                    </div>
+                                    <div>
+
+                                    </div>
+                                    <div class="price_container">
+                                        &dollar; <span id="final_price">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="visa_description_current d-none mt-3 fw-bold fst-italic"
+                                        data-visa-type="1">
+                                        <p>
+                                            The subsequent temporary application charge may apply to the Sc 482 visa
+                                            application, depending on the visa's applicant visa history.
+                                        </p>
+                                    </div>
+                                    <div class="visa_description_current d-none mt-3 fw-bold fst-italic"
+                                        data-visa-type="3">
+                                        <p>
+                                            The nomination fee for the Sc 186 nomination application under the TRT or LA
+                                            stream is waived for businesses in regional Australia."
+                                        </p>
+                                    </div>
+                                    <div class="calc_description mt-2">
+                                        <p>
+                                            Our cost calculator generates estimates only based on the information
+                                            provided,
+                                            it
+                                            does not constitute a formal quote or legal advice. All government fees are
+                                            based on
+                                            current Department of Home Affairs schedules and may change without notice.
+                                        </p>
+                                        <p>
+                                            Estimates exclude legal professional fees, GST, third-party charges (e.g.
+                                            health
+                                            examinations, biometrics, translations, courier fees), and any other
+                                            disbursements or
+                                            out-of-pocket expenses. Actual costs will vary based on your specific
+                                            circumstances
+                                            and visa pathway. If you would like a full personalised quote, please enter
+                                            your
+                                            details on the next page and we will be in contact.
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step-2" class="d-none">
+
+                        </div>
+
+                        <div class="row claim_btn_cont mt-3">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button id="claim_btn">
+                                    Claim Your Consultation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+    <script src="lib/nice-select2.js"></script>
+    <script src="assets/scripts/index.js"></script>
+
+     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltipTriggerEl = document.querySelectorAll('.tooltipBtn');
+            const submitBtn = document.querySelector('#step-2 input[type="submit"]');
+            submitBtn && (submitBtn.value = 'Submit');
+
+            tooltipTriggerEl.forEach((button) => {
+                // Initialize tooltip
+                const tooltipInstance = new bootstrap.Tooltip(button);
+
+                // Optional: Programmatically show the tooltip (e.g., on click)
+                button.addEventListener('click', () => {
+                    tooltipInstance.show();
+
+                    // Optional: Hide it after 2 seconds
+                    setTimeout(() => {
+                        tooltipInstance.hide();
+                    }, 2000);
+                });
+            })
+        });
+    </script>
+
+</body>
+
+</html>
