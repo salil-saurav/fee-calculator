@@ -1,3 +1,21 @@
+/**
+ * @class VisaCalculator
+ * @description Handles calculation of visa fees based on various parameters including visa type, turnover, duration, and dependents
+ * 
+ * @property {Object} config - Configuration object containing visa types and their associated fees
+ * @property {Object} config.visaTypes - Object containing different visa type configurations
+ * @property {Object} state - Current state of the calculator including selected options
+ * @property {number} state.visaType - Selected visa type ID
+ * @property {boolean} state.isHighTurnover - Whether high turnover rates apply
+ * @property {number} state.duration - Duration of the visa in years
+ * @property {number} state.dependentsOver18 - Number of dependents over 18 years
+ * @property {number} state.dependentsUnder18 - Number of dependents under 18 years
+ * @property {Object} elements - Cached DOM elements used by the calculator
+ * 
+ * @example
+ * const calculator = new VisaCalculator();
+ * // Calculator will automatically initialize and bind to form elements
+ */
 class VisaCalculator {
    constructor() {
       this.config = {
@@ -9,7 +27,9 @@ class VisaCalculator {
                dependentAdult: 3115,
                dependentChild: 780,
                levy: { standard: 1200, high: 1800 },
-               usesDuration: true
+               usesDuration: true,
+               showPrimaryVisa: true,
+               showDependents: true,
             },
             2: {
                name: 'Nomination Transfer',
@@ -18,7 +38,9 @@ class VisaCalculator {
                dependentAdult: 0,
                dependentChild: 0,
                levy: { standard: 1200, high: 1800 },
-               usesDuration: false
+               usesDuration: false,
+               showPrimaryVisa: false,
+               showDependents: false
             },
             3: {
                name: 'Employer Nomination',
@@ -27,7 +49,10 @@ class VisaCalculator {
                dependentAdult: 2385,
                dependentChild: 1190,
                levy: { standard: 3000, high: 5000 },
-               usesDuration: false
+               usesDuration: false,
+               showPrimaryVisa: true,
+               showDependents: true
+
             }
          }
       };
@@ -56,28 +81,41 @@ class VisaCalculator {
          businessTurnover: document.querySelector('div[data-name="businessTernover"]'),
          visaDuration: document.querySelector('div[data-name="Visaduration"]'),
          dependentWrap: document.querySelector('div.dependentWrap'),
+         secondryVisaApplication: document.querySelectorAll('.secondryApplication'),
          dependentOver18: document.querySelector('.secondryApplication.over18'),
          dependentUnder18: document.querySelector('.secondryApplication.under18'),
          currentVisaDescription: document.querySelectorAll('.visa_description_current'),
+         primaryVisaApplication: document.querySelector('.visaApplication'),
+         orApplicant: document.querySelector('.orApplicant'),
       };
    }
 
-
    bindEvents() {
       // Single event handler for all inputs
-      this.elements.visaType?.addEventListener('change', () => this.handleInputChange());
+      this.elements.visaType?.addEventListener('change', (evt) => this.handleInputChange(evt));
       this.elements.turnover.forEach(radio =>
-         radio.addEventListener('change', () => this.handleInputChange())
+         radio.addEventListener('change', (evt) => this.handleInputChange(evt))
       );
-      this.elements.duration?.addEventListener('input', () => this.handleInputChange());
-      this.elements.over18?.addEventListener('input', () => this.handleInputChange());
-      this.elements.under18?.addEventListener('input', () => this.handleInputChange());
+      this.elements.duration?.addEventListener('input', (evt) => this.handleInputChange(evt));
+      this.elements.over18?.addEventListener('input', (evt) => this.handleInputChange(evt));
+      this.elements.under18?.addEventListener('input', (evt) => this.handleInputChange(evt));
    }
 
-   handleInputChange() {
+   handleInputChange(evt) {
+      const input = evt.target;
+
+      if (input.type === 'number' || input.type === 'text') {
+         input.value = this.sanitizeNumericValue(input.value);
+      }
+
       this.updateState();
       this.updateVisibility();
       this.updateDisplay();
+   }
+
+   sanitizeNumericValue(value) {
+      const parsed = parseInt(value.trim(), 10);
+      return isNaN(parsed) ? 0 : parsed;
    }
 
    updateState() {
@@ -89,31 +127,38 @@ class VisaCalculator {
          dependentsUnder18: parseInt(this.elements.under18?.value || 0)
       };
    }
-
    updateVisibility() {
-      const visaConfig = this.config.visaTypes[this.state.visaType];
-      const showFields = this.state.visaType > 0;
-      const hasDependentUnder18 = this.state.dependentsUnder18 > 0;
-      const hasDependentOver18 = this.state.dependentsOver18 > 0;
+      const { visaType, dependentsUnder18, dependentsOver18 } = this.state;
+      const visaConfig = this.config.visaTypes[visaType];
+      const showFields = visaType > 0;
 
-      // Toggle field visibility
+      // Update dependent visibility
+      if (visaConfig?.showDependents) {
+         this.elements.secondryVisaApplication?.forEach(el =>
+            this.toggleElement(el, true));
+         this.toggleElement(this.elements.dependentOver18, dependentsOver18 > 0);
+         this.toggleElement(this.elements.dependentUnder18, dependentsUnder18 > 0);
+      } else {
+         this.elements.secondryVisaApplication?.forEach(el =>
+            this.toggleElement(el, false));
+      }
+
+      // Update main form sections
       this.toggleElement(this.elements.businessTurnover, showFields);
       this.toggleElement(this.elements.visaDuration, showFields && visaConfig?.usesDuration);
-      this.elements.dependentWrap?.classList.toggle('mt-5', !showFields);
+      this.toggleElement(this.elements.dependentWrap, visaConfig?.showDependents);
+      this.toggleElement(this.elements.primaryVisaApplication, showFields && visaConfig?.showPrimaryVisa);
 
-      this.toggleElement(this.elements.dependentOver18, hasDependentOver18);
-      this.toggleElement(this.elements.dependentUnder18, hasDependentUnder18);
-
-      // Show/Hide visa Description
-
-      this.elements.currentVisaDescription.forEach(el => {
-
-         const currentVisa = parseInt(el.dataset.visaType);
-         const isCurrent = currentVisa === this.state.visaType;
-         this.toggleElement(el, isCurrent);
+      // Update visa descriptions
+      this.elements.currentVisaDescription?.forEach(el => {
+         this.toggleElement(el, parseInt(el.dataset.visaType) === visaType);
       });
 
+      // Update dependent wrap spacing
+      this.elements.dependentWrap?.classList.toggle('mt-5', !showFields);
 
+      // Update orApplicant 
+      this.toggleElement(this.elements.orApplicant, visaType === 3);
    }
 
    toggleElement(element, show) {
@@ -282,7 +327,7 @@ class StepManager {
          }
       });
 
-      this.claimButton.textContent = isStep2 ? 'Fee Calculator' : 'Claim Your FREE consultation';
+      this.claimButton.textContent = isStep2 ? 'Go back' : 'Claim Your FREE consultation';
    }
 }
 
